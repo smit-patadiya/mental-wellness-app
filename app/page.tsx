@@ -5,14 +5,22 @@ import { Sprout, Mic, Wind, LifeBuoy, ArrowLeft, Sparkle, Sun, Moon, Send, Check
 import type { AnalysisResult, Technique } from '@/lib/schema';
 import { activityFor } from '@/lib/techniques';
 import { DEMO_ANALYSIS } from '@/lib/demo';
-import { saveEntry } from '@/lib/storage';
+import { saveEntry, getEntries } from '@/lib/storage';
 import { Welcome } from '@/components/Welcome';
 import { Insights } from '@/components/Insights';
 import { Sounds } from '@/components/Sounds';
 import { You } from '@/components/You';
 import { BottomNav, type Tab } from '@/components/BottomNav';
+import { playMusic, toggleMusic, isMusicPlaying, subscribeMusic } from '@/lib/music';
 
-const FEELINGS = ['Overwhelmed', 'Anxious', "Can't focus", 'Panicking', 'Low', 'Okay'];
+const FEELINGS: { label: string; color: string }[] = [
+  { label: 'Overwhelmed', color: '#E89A6B' },
+  { label: 'Anxious', color: '#5BA7C9' },
+  { label: "Can't focus", color: '#C99A4E' },
+  { label: 'Panicking', color: '#D8674E' },
+  { label: 'Low', color: '#9B86C9' },
+  { label: 'Okay', color: '#2E8270' },
+];
 const HELPLINES = [
   { name: 'Tele-MANAS', num: '14416' },
   { name: 'KIRAN', num: '1800-599-0019' },
@@ -24,6 +32,7 @@ const STEPS: Record<Exclude<Technique, 'breathing'>, string[]> = {
   self_compassion: ['This is a hard moment.', 'Hard moments are part of being a student.', 'May I be kind to myself right now.'],
   break: ['Stand up — water, or look out a window.', 'Stretch for 60 seconds.', 'Your books will wait. Come back when ready.'],
   affect_labeling: ['Name what you feel, in plain words.', 'Say it: “I feel ___ because ___.”', 'Notice it soften, even a little.'],
+  yoga: ['Sit tall — roll your shoulders back slowly, 3 times.', 'Reach both arms up, then fold gently forward over your desk.', 'Slow neck rolls each side; breathe out as you release.'],
 };
 const TECH_ICON: Record<Technique, JSX.Element> = {
   breathing: <Wind />,
@@ -32,6 +41,7 @@ const TECH_ICON: Record<Technique, JSX.Element> = {
   self_compassion: <LifeBuoy />,
   break: <Sun />,
   affect_labeling: <Check />,
+  yoga: <Sprout />,
 };
 
 function greeting(): string {
@@ -40,6 +50,23 @@ function greeting(): string {
 }
 function moodFromScore(s: number): string {
   return s >= 7 ? 'calm' : s >= 4 ? 'neutral' : 'low';
+}
+function gatherContext() {
+  const recent = getEntries().slice(-4);
+  const recentMoods = recent.map((e) => e.moodScore);
+  const topStressors = Array.from(new Set(recent.flatMap((e) => e.stressors || []))).slice(0, 4);
+  let exam: { name: string; daysLeft: number } | undefined;
+  try {
+    const raw = localStorage.getItem('mindmitra.exam');
+    if (raw) {
+      const ex = JSON.parse(raw) as { name: string; date: string };
+      const dl = Math.max(0, Math.floor((new Date(ex.date).getTime() - Date.now()) / 86400000));
+      exam = { name: ex.name, daysLeft: dl };
+    }
+  } catch {
+    /* no exam set */
+  }
+  return { recentMoods, topStressors, exam };
 }
 
 export default function Page() {
@@ -53,6 +80,7 @@ export default function Page() {
   const [listening, setListening] = useState(false);
   const [dark, setDark] = useState(false);
   const [mood, setMood] = useState('calm');
+  const [musicOn, setMusicOn] = useState(false);
   const recRef = useRef<any>(null);
 
   useEffect(() => {
@@ -60,11 +88,13 @@ export default function Page() {
     const d = localStorage.getItem('mindmitra.dark') === '1';
     setDark(d);
     document.documentElement.classList.toggle('dark', d);
+    return subscribeMusic(() => setMusicOn(isMusicPlaying()));
   }, []);
 
   function beginApp() {
     localStorage.setItem('mindmitra.welcomed', '1');
     setWelcomed(true);
+    playMusic('rain'); // gentle ambient starts on this user gesture
   }
   function toggleDark() {
     const d = !dark;
@@ -84,7 +114,7 @@ export default function Page() {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: t, source }),
+        body: JSON.stringify({ text: t, source, context: gatherContext() }),
       });
       const data: AnalysisResult = res.ok ? await res.json() : DEMO_ANALYSIS;
       setResult(data);
@@ -143,6 +173,11 @@ export default function Page() {
 
   return (
     <div className="app" data-mood={mood}>
+      <div className="blobs" style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }} aria-hidden>
+        <div className="blob b-mint s-md at-tr" />
+        <div className="blob b-sand s-sm at-bl" />
+      </div>
+
       <header className="app-bar">
         {showBack ? (
           <button className="icon-btn" aria-label="Back" onClick={() => (stage === 'activity' ? setStage('result') : goHome())}>
@@ -155,6 +190,13 @@ export default function Page() {
           <div className="brand-name">MindMitra</div>
           <div className="brand-sub">a calm minute, then back to it</div>
         </div>
+        <button className="icon-btn" aria-label={musicOn ? 'Mute background sound' : 'Play background sound'} onClick={() => toggleMusic('rain')} style={{ color: musicOn ? 'var(--p-600)' : 'var(--ink)' }}>
+          {musicOn ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M11 5 6 9H2v6h4l5 4z" /><path d="M15.5 8.5a5 5 0 0 1 0 7" /><path d="M19 5a9 9 0 0 1 0 14" /></svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M11 5 6 9H2v6h4l5 4z" /><path d="m22 9-6 6M16 9l6 6" /></svg>
+          )}
+        </button>
         <button className="icon-btn" aria-label={dark ? 'Light mode' : 'Dark mode'} onClick={toggleDark}>
           {dark ? <Sun /> : <Moon />}
         </button>
@@ -165,9 +207,16 @@ export default function Page() {
           <div className="home" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
             <p className="greeting">{greeting()}.</p>
             <h1 className="headline">How are you feeling right now?</h1>
-            <div className="feel-grid" role="group" aria-label="Quick feelings">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 9 }} role="group" aria-label="Quick feelings">
               {FEELINGS.map((f) => (
-                <button key={f} className="chip" onClick={() => submit(f, 'chip')}>{f}</button>
+                <button
+                  key={f.label}
+                  onClick={() => submit(f.label, 'chip')}
+                  style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 14, borderRadius: 'var(--r-md)', border: '1px solid var(--line)', background: 'var(--surface)', fontSize: 14, fontWeight: 500, color: 'var(--ink)', cursor: 'pointer', boxShadow: 'var(--e1)', fontFamily: 'inherit', textAlign: 'left' }}
+                >
+                  <span style={{ width: 24, height: 24, borderRadius: 8, background: f.color, flex: '0 0 auto' }} />
+                  {f.label}
+                </button>
               ))}
             </div>
             <div className="mic-wrap">

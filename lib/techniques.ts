@@ -3,7 +3,7 @@ import type { Technique } from './schema';
 export interface ActivityMeta {
   title: string;
   durationMin: number;
-  kind: 'breathing' | 'cognitive' | 'grounding' | 'reflection';
+  kind: 'breathing' | 'cognitive' | 'grounding' | 'reflection' | 'movement';
   blurb: string;
 }
 
@@ -43,6 +43,12 @@ export const TECHNIQUES: Record<Technique, ActivityMeta> = {
     durationMin: 1,
     kind: 'reflection',
     blurb: 'Putting feelings into words softens them. (Affect labeling)',
+  },
+  yoga: {
+    title: 'Gentle desk yoga',
+    durationMin: 3,
+    kind: 'movement',
+    blurb: 'Release the tension your body is holding — a few simple stretches.',
   },
 };
 

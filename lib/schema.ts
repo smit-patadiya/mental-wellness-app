@@ -7,6 +7,7 @@ export const TechniqueEnum = z.enum([
   'self_compassion',
   'break',
   'affect_labeling',
+  'yoga',
 ]);
 export type Technique = z.infer<typeof TechniqueEnum>;
 

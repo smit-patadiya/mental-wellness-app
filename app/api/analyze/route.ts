@@ -11,12 +11,11 @@ function escalate(a: RiskLevel, b: RiskLevel): RiskLevel {
   return ORDER.indexOf(a) >= ORDER.indexOf(b) ? a : b;
 }
 
-function buildPrompt(text: string): string {
+function buildPrompt(text: string, context: string): string {
   return `You are MindMitra, a warm, evidence-based wellness companion for a student under exam stress in India.
 Read the student's message and respond with empathy grounded in CBT / mindfulness / self-compassion.
-Validate first; name the emotion; never be dismissive; never give medical advice.
-
-Student said: """${text}"""
+Validate first; name the emotion; never be dismissive; never give medical advice. You may gently suggest hydration, a snack, regular meals, light movement or sleep when relevant (food, movement and sleep affect mood).
+${context}Student said: """${text}"""
 
 Return ONLY a JSON object (no markdown) with exactly these fields:
 {
@@ -25,15 +24,15 @@ Return ONLY a JSON object (no markdown) with exactly these fields:
   "moodScore": integer 1-10 (1 = very low, 10 = great) inferred from the message,
   "emotions": ["2-4 lowercase emotion words"],
   "stressors": ["1-3 short specific stressors you infer"],
-  "technique": one of "breathing" | "reframe" | "grounding" | "self_compassion" | "break" | "affect_labeling",
+  "technique": one of "breathing" | "reframe" | "grounding" | "self_compassion" | "break" | "affect_labeling" | "yoga",
   "encouragement": "1-2 sentences, honest and grounded, then nudge them gently back to studying",
   "riskLevel": "green" | "yellow" | "orange" | "red"
 }
-Pick technique by need: acute panic->breathing; harsh self-criticism->self_compassion; catastrophizing->reframe; spiraling->grounding; can't name it->affect_labeling; burnt out->break.
+Pick the technique that truly fits — do NOT default to breathing: acute panic->breathing; harsh self-criticism->self_compassion; catastrophizing->reframe; spiraling->grounding; can't name it->affect_labeling; burnt out->break; physical tension/stiffness/restless body->yoga.
 Set riskLevel green for normal stress; yellow if persistently low; orange/red only for hopelessness or self-harm signals.`;
 }
 
-async function callGemini(key: string, text: string): Promise<string> {
+async function callGemini(key: string, text: string, context: string): Promise<string> {
   const url =
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' +
     encodeURIComponent(key);
@@ -41,7 +40,7 @@ async function callGemini(key: string, text: string): Promise<string> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: buildPrompt(text) }] }],
+      contents: [{ parts: [{ text: buildPrompt(text, context) }] }],
       generationConfig: { responseMimeType: 'application/json', temperature: 0.6 },
     }),
   });
@@ -68,13 +67,25 @@ export async function POST(req: NextRequest) {
   // Deterministic safety guard ALWAYS runs first — even if the model fails.
   const guard = checkCrisis(text).level;
 
+  // Optional personalization context from the client (recent moods, stressors, exam).
+  const c = (body as { context?: Record<string, unknown> }).context;
+  let context = '';
+  if (c) {
+    const parts: string[] = [];
+    if (Array.isArray(c.recentMoods) && c.recentMoods.length) parts.push(`recent mood scores ${c.recentMoods.slice(-5).join(', ')}`);
+    if (Array.isArray(c.topStressors) && c.topStressors.length) parts.push(`recurring stressors ${c.topStressors.slice(0, 4).join(', ')}`);
+    const exam = c.exam as { name?: string; daysLeft?: number } | undefined;
+    if (exam?.name) parts.push(`exam ${String(exam.name).slice(0, 40)} in ${Number(exam.daysLeft) || '?'} days`);
+    if (parts.length) context = `Context about this student (use to personalize; do not repeat verbatim): ${parts.join('; ')}.\n`;
+  }
+
   const key = process.env.GEMINI_API_KEY;
   let analysis: AnalysisResult;
   if (!key) {
     analysis = { ...DEMO_ANALYSIS };
   } else {
     try {
-      analysis = parseAnalysis(await callGemini(key, text));
+      analysis = parseAnalysis(await callGemini(key, text, context));
     } catch {
       analysis = { ...DEMO_ANALYSIS };
     }
