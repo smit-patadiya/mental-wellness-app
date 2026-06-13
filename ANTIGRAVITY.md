@@ -33,6 +33,16 @@
 | A12 | **Per-exercise animations** — richer breathing guide, grounding step reveals, reframe input affordance | Antigravity | ⬜ |
 | A13 | **Desktop device-frame polish** — refine the phone frame (notch/status bar optional), responsive scaling | Antigravity | ⬜ |
 | A14 | **Dashboard visuals** — nicer trend chart, streak-free progress, entry cards polish | Antigravity | ⬜ |
+| A15 | **Welcome / onboarding screen** — low-text, animated breathing orb, "Begin" (see design-variant.html) | Antigravity | ⬜ |
+| A16 | **Interaction animations** — page-enter, button press, mood-select, card rise (subtle, reduced-motion safe) | Antigravity | ⬜ |
+| A17 | **Background music + mood-based sound** (sound therapy) — ambient tracks, change by mood, mute toggle, pause on crisis | Antigravity | ⬜ |
+| A18 | **Light blurred background images/art** per mood (color therapy) behind the gradient | Antigravity | ⬜ |
+| A19 | **Redesign result + activity screens** per design-variant — graphic-first, **less text**, animated orb, big activity card | Antigravity + Claude | ⬜ |
+| A20 | **Icon bottom bar** — Today · Insights · **Breathe** (center FAB) · Sounds · You | Claude (struct) + Antigravity (polish) | ⬜ |
+| A21 | **Mobile UI polish** — spacing, tap targets, safe areas, full-bleed on phones | Antigravity | ⬜ |
+| A22 | **Exercise animations** — box-breathing orb, grounding reveals, optional human/figure SVG motion | Antigravity | ⬜ |
+
+> **Latest feedback (captured):** welcome screen+anim · interaction anims · exercise anims · mood/daytime/interaction color change · blurred bg images · background music by mood · low-text + graphics-first · rethink result & other screens · color therapy + sound therapy + meditation + CBT + self-compassion · richer icon bottom bar. All mapped above → **pending design-direction approval** (design-variant.html).
 
 ## Hooks already in place for you
 - `data-daypart` is set on `<html>` by `components/Theme.tsx` (values: morning/day/evening/night) — style via `:root[data-daypart='…']` in SCSS.
