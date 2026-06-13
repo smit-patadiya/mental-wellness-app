@@ -28,6 +28,11 @@
 | A7 | **Activity visuals** — grounding step transitions, reframe input affordances | Antigravity | ⬜ |
 | A8 | **Icon set expansion** — more crafted SVGs in `components/icons.tsx` as needed | Antigravity | ⬜ |
 | A9 | **A11y + motion QA** — focus rings, contrast recheck across themes, motion off | Antigravity | ⬜ |
+| A10 | **Background music** — optional ambient audio + mute toggle (persist pref); pause on crisis screen | Antigravity | ⬜ |
+| A11 | **Per-mood background art/images** — soft imagery/illustration layered behind the gradient per `data-mood` (calm/low/anxious) | Antigravity | ⬜ |
+| A12 | **Per-exercise animations** — richer breathing guide, grounding step reveals, reframe input affordance | Antigravity | ⬜ |
+| A13 | **Desktop device-frame polish** — refine the phone frame (notch/status bar optional), responsive scaling | Antigravity | ⬜ |
+| A14 | **Dashboard visuals** — nicer trend chart, streak-free progress, entry cards polish | Antigravity | ⬜ |
 
 ## Hooks already in place for you
 - `data-daypart` is set on `<html>` by `components/Theme.tsx` (values: morning/day/evening/night) — style via `:root[data-daypart='…']` in SCSS.
@@ -35,5 +40,6 @@
 - Result emotions are available in the page; wiring `data-mood` (A1) is a small change in `app/page.tsx` — ask Claude or leave a note.
 
 ## Overall project status (whole app)
-- ✅ Foundation, design tokens (SCSS), layout · ✅ Safety guard + tests · ✅ Schema + tests · ✅ Techniques + demo + tests · ✅ Icons + UI primitives · ✅ Storage · ✅ `/api/analyze` (key server-side) · ✅ Single-input UI + result + 6 activities + crisis + voice + dark · ✅ ESLint + Prettier · 🟡 Daypart theme (scaffolded) · ⬜ Mood theme (A1) · ⬜ Visual polish (A3–A8) · ⬜ Mood trend view · ⬜ Crisis red-team sign-off · ⬜ README · ⬜ Vercel deploy
-- **Tests: 19 passing.** Build: clean. Next: 14.2.35 (patched).
+- ✅ Foundation + SCSS design tokens · ✅ Safety guard + tests · ✅ Schema + tests · ✅ Techniques + demo + tests · ✅ Icons + UI primitives · ✅ Storage · ✅ `/api/analyze` (key server-side, **live Gemini verified**) · ✅ Single-input UI + result + 6 activities + crisis + voice + dark · ✅ **Device-frame redesign + mood-reactive background** · ✅ **Dashboard (past tracking, mood trend, export/delete)** · ✅ Bottom nav · ✅ Animated breathing · ✅ Daypart theme · ✅ ESLint + Prettier
+- ⬜ Antigravity visual polish (A1–A14) · ⬜ Crisis red-team sign-off · ⬜ README · ⬜ Vercel deploy
+- **Tests: 19 passing.** Build + lint clean. Next 14.2.35 (patched). Verified in browser: home · result · crisis · dashboard.
