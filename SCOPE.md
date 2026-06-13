@@ -11,10 +11,12 @@
 - **3 activities** — box breathing (animated), CBT reframe, 5-4-3-2-1 grounding; routed by `technique`.
 - **Voice journaling** — Web Speech STT.
 - **localStorage** — entries + inferred mood; simple mood trend; export/delete.
-- **Calm-minimal, mobile, accessible.** Deploy on Vercel, key server-side.
+- **Return-to-study close** — ≤2-min sessions, gentle "Back to studying" exit (anti-engagement — our moat, [MARKET.md](MARKET.md)).
+- **Tests** — crisis-guard / schema / routing unit tests + **crisis red-team** ([TESTING.md](TESTING.md)).
+- **Calm-minimal, mobile-first, accessible.** Deploy on Vercel, key server-side.
 
 ## 🟦 MVP+ — add in THIS order as time allows
-> You picked all four. Honest math: ≈ **+1h55m** on top of the ~2.5h core ≈ **~4.5h total** — over the 2–3h budget. Ordered by value/effort; **drop the tail if the clock runs out.** Storage stays **local-first**.
+> You picked all four. Budget is now **4–5h** → all four **fit** (~2.5h core + ~1h55m ≈ ~4.5h). Still ordered by value/effort. Storage stays **local-first**.
 1. **Spoken exercises (TTS)** — ~15m · Web Speech reads breathing/grounding aloud.
 2. **Light pattern view** — ~30m · mood trend + top 3 triggers (the hero, kept light — not a dashboard).
 3. **Distraction break + 1 calming game** — ~40m · DBT "take a real break" menu + a built-in breathing-bubble game (no scores). **No external videos/movies.**

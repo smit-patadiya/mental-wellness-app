@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MindMitra — design system preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBFAF8;--surface:#FFFFFF;--surface2:#F5F3EF;--ink:#1C1B1A;--inksoft:#4A4843;--muted:#6E6A65;--line:#ECEAE6;
+  --p50:#EEF6F3;--p100:#D6EAE3;--p200:#AED5C8;--p400:#4F9E88;--p500:#2E8270;--p600:#1F6A5A;--p700:#185447;--p900:#0C2A24;
+  --a200:#FBE0CF;--a400:#F2B58C;--a500:#E89A6B;--a700:#B66B3E;
+  --rose50:#FEF3F2;--rose700:#B42318;--amber50:#FEF7EC;--amber700:#B45309;
+  --e1:0 1px 2px rgba(18,40,34,.05);--e2:0 8px 24px rgba(18,40,34,.07);--ring:0 0 0 3px rgba(46,130,112,.35);
+  --rsm:10px;--rmd:14px;--rlg:18px;--rxl:24px;
+}
+.dark{
+  --bg:#121517;--surface:#1A1E21;--surface2:#232A2D;--ink:#ECECEA;--inksoft:#B9BEC0;--muted:#8A9094;--line:#2C3438;
+  --p50:#16302A;--p100:#1b3b33;--p200:#235044;--p400:#5DBBA2;--p500:#6FC9B0;--p600:#8FD7C3;--p700:#AED5C8;--p900:#EAF6F2;
+  --rose50:#2A1614;--rose700:#F0998F;--amber50:#2A2110;--amber700:#F0C079;--e1:0 1px 2px rgba(0,0,0,.3);--e2:0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 80px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.logo{width:40px;height:40px;border-radius:12px;background:var(--p500);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px}
+h1{font-family:Fraunces,serif;font-weight:500;font-size:30px;margin:0;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:15px;margin:2px 0 0}
+.toggle{margin-left:auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:9px 16px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit}
+.kick{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--p500);margin:40px 0 14px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--rlg);box-shadow:var(--e1);padding:20px}
+
+/* phone */
+.phone{width:300px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:30px;box-shadow:var(--e2);overflow:hidden}
+.pscr{padding:18px;min-height:480px;display:flex;flex-direction:column;background:linear-gradient(180deg,var(--p50),var(--bg) 40%)}
+.dark .pscr{background:linear-gradient(180deg,var(--surface2),var(--surface) 45%)}
+.pbar{display:flex;align-items:center;gap:9px;margin-bottom:18px}
+.pdot{width:30px;height:30px;border-radius:9px;background:var(--p500);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
+.pbar b{font-size:15px}.pbar span{font-size:12px;color:var(--muted);display:block;line-height:1.2}
+.qfr{font-family:Fraunces,serif;font-size:21px;font-weight:500;margin:4px 0 16px;letter-spacing:-.01em}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;font-weight:500;color:var(--inksoft);cursor:pointer}
+.chip.on{background:var(--p500);border-color:var(--p500);color:#fff}
+.mic{margin:20px auto 8px;width:64px;height:64px;border-radius:50%;background:var(--p500);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:var(--e1)}
+.mcap{text-align:center;font-size:13px;color:var(--muted)}
+.tin{margin-top:14px;border:1px solid var(--line);background:var(--surface);border-radius:var(--rmd);padding:12px;font-size:14px;color:var(--muted)}
+.priv{margin-top:auto;text-align:center;font-size:11px;color:var(--muted);padding-top:14px}
+
+/* result */
+.rc{background:var(--surface);border:1px solid var(--line);border-radius:var(--rmd);box-shadow:var(--e1);padding:13px;margin-bottom:10px}
+.rl{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--p500);margin-bottom:3px}
+.reflect{font-family:Fraunces,serif;font-size:17px;line-height:1.45}
+.chipins{display:inline-block;background:var(--p50);color:var(--p700);font-size:13px;font-weight:500;padding:4px 10px;border-radius:999px}
+.act{display:flex;align-items:center;gap:10px;background:var(--p50);border:1px solid var(--p200);border-radius:var(--rmd);padding:12px;margin-bottom:10px}
+.act .ai{width:34px;height:34px;border-radius:10px;background:var(--p500);color:#fff;display:flex;align-items:center;justify-content:center}
+.act b{font-size:14px}.act span{font-size:12px;color:var(--muted)}
+.back{margin-top:4px;font-size:13px;color:var(--p600);font-weight:600}
+
+/* foundations */
+.ramp{display:flex;border-radius:var(--rmd);overflow:hidden;border:1px solid var(--line)}
+.ramp i{flex:1;height:46px}
+.swrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.sw{font-size:11px;color:var(--muted)}
+.type div{margin-bottom:8px}
+.btn{border:0;border-radius:999px;padding:13px 20px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn.p{background:var(--p500);color:#fff;box-shadow:var(--e1)}
+.btn.q{background:transparent;color:var(--inksoft);border:1px solid var(--line)}
+.breathe{margin:6px auto;width:104px;height:104px;border-radius:50%;background:var(--p50);border:2px solid var(--p400);display:flex;align-items:center;justify-content:center;color:var(--p700);font-weight:600;font-size:13px;animation:br 8s ease-in-out infinite}
+@keyframes br{0%,100%{transform:scale(.72)}50%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.breathe{animation:none}}
+.crisis{background:var(--rose50);border:1px solid var(--rose700);border-radius:var(--rmd);padding:14px}
+.crisis h4{margin:0 0 6px;color:var(--rose700);font-size:15px}
+.hl{display:flex;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:7px;font-size:14px;font-weight:600}
+.hl .n{color:var(--rose700)}
+.spark{height:54px;display:flex;align-items:flex-end;gap:5px}
+.spark i{flex:1;background:var(--p400);border-radius:4px 4px 0 0;opacity:.85}
+.note{font-size:13px;color:var(--muted)}
+h3{font-size:16px;margin:0 0 10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo">🌿</div>
+    <div><h1>MindMitra</h1><p class="sub">design system · calm · premium · accessible</p></div>
+    <button class="toggle" id="tg">🌙 Dark</button>
+  </div>
+
+  <p class="kick">The app, in the real style</p>
+  <div class="cols">
+    <div class="phone"><div class="pscr">
+      <div class="pbar"><div class="pdot">🌿</div><div><b>MindMitra</b><span>by your day</span></div></div>
+      <div class="qfr">How are you feeling right now?</div>
+      <div class="chips">
+        <span class="chip on">Overwhelmed</span><span class="chip">Anxious</span>
+        <span class="chip">Can't focus</span><span class="chip">Low</span><span class="chip">Okay</span>
+      </div>
+      <div class="mic">🎙️</div>
+      <div class="mcap">tap to talk, or type</div>
+      <div class="tin">Type a line… ↵</div>
+      <div class="priv">🔒 private · stays on your device</div>
+    </div></div>
+
+    <div class="phone"><div class="pscr" style="background:var(--bg)">
+      <div class="pbar"><div class="pdot">🌿</div><div><b>Your moment</b><span>30 seconds</span></div></div>
+      <div class="rc"><div class="rl">Reflect</div><div class="reflect">Sounds like today's mock really shook you.</div></div>
+      <div class="rc"><div class="rl">Reveal</div><span class="chipins">3rd dip after evening mocks this week</span></div>
+      <div class="act"><div class="ai">🫁</div><div><b>Box breathing</b><br><span>2 min · calms the body</span></div></div>
+      <div class="rc"><div class="rl">Encourage</div>You showed up and tried — that counts.</div>
+      <div class="back">↩ Back to studying</div>
+    </div></div>
+  </div>
+
+  <p class="kick">Foundations</p>
+  <div class="cols">
+    <div class="card">
+      <h3>Color — Sage (primary)</h3>
+      <div class="ramp"><i style="background:var(--p50)"></i><i style="background:var(--p100)"></i><i style="background:var(--p200)"></i><i style="background:var(--p400)"></i><i style="background:var(--p500)"></i><i style="background:var(--p600)"></i><i style="background:var(--p700)"></i><i style="background:var(--p900)"></i></div>
+      <h3 style="margin-top:16px">Apricot (accent) · semantics</h3>
+      <div class="ramp"><i style="background:var(--a200)"></i><i style="background:var(--a400)"></i><i style="background:var(--a500)"></i><i style="background:var(--a700)"></i><i style="background:var(--amber700)"></i><i style="background:var(--rose700)"></i></div>
+      <p class="note" style="margin-top:10px">Low-saturation, warm neutrals. All text pairings meet WCAG AA.</p>
+    </div>
+
+    <div class="card type">
+      <h3>Typography</h3>
+      <div style="font-family:Fraunces,serif;font-size:28px;font-weight:500">Fraunces · empathy</div>
+      <div style="font-size:22px;font-weight:600">Inter · headings</div>
+      <div style="font-size:16px">Inter regular · body text, calm and readable at 16px.</div>
+      <div style="font-size:13px;color:var(--muted)">Inter · captions & meta</div>
+      <h3 style="margin-top:16px">Buttons & chips</h3>
+      <button class="btn p">Generate</button> <button class="btn q">Skip</button>
+      <div class="chips" style="margin-top:10px"><span class="chip on">Selected</span><span class="chip">Chip</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Breathing visual</h3>
+      <div class="breathe">breathe in…</div>
+      <p class="note" style="text-align:center">gentle 4s loop · respects reduced-motion</p>
+      <h3 style="margin-top:16px">Mood trend</h3>
+      <div class="spark"><i style="height:40%"></i><i style="height:55%"></i><i style="height:35%"></i><i style="height:60%"></i><i style="height:50%"></i><i style="height:70%"></i><i style="height:62%"></i></div>
+    </div>
+
+    <div class="card">
+      <h3>Crisis card (calm, clear, never alarming)</h3>
+      <div class="crisis">
+        <h4>You're not alone</h4>
+        <p class="note" style="margin:0 0 10px">It sounds heavy right now. Please talk to someone who can help — today.</p>
+        <div class="hl"><span>Tele-MANAS</span><span class="n">14416</span></div>
+        <div class="hl"><span>KIRAN</span><span class="n">1800-599-0019</span></div>
+        <div class="hl"><span>iCall</span><span class="n">9152987821</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const b=document.body,t=document.getElementById('tg');
+t.onclick=()=>{b.classList.toggle('dark');t.textContent=b.classList.contains('dark')?'☀️ Light':'🌙 Dark'};
+</script>
+</body>
+</html>

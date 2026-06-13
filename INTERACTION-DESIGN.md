@@ -81,7 +81,7 @@ Every journal/check-in returns the same predictable shape (= [FRAMEWORK.md](FRAM
 │           evening mocks this week"        │
 │ Act       [ interactive activity card ]   │  ← ONE ≤2-min action
 │ Encourage grounded, specific             │  ← tied to real effort
-│ Next      "Log how you feel now?" →       │  ← closed loop
+│ Next      "Back to studying →"  (calmer)  │  ← exit: send them back to study
 └─────────────────────────────────────────┘
 ```
 One primary action. Calm card, not a report dump.

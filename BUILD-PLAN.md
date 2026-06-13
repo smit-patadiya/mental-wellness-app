@@ -14,8 +14,8 @@
 ## Guardrails carried from the warm-up
 Key server-side · strict JSON schema (Zod) validated, fail-loud · pure logic separated/testable · clean folders · README · accessibility.
 
-## Reality check — 2–3 hour, AI-built MVP (don't over-engineer)
-Simple > clever. Use AI only where only AI helps; plain code for everything else.
+## Reality check — 4–5 hour, AI-built MVP (still don't over-engineer)
+Simple > clever. Use AI only where only AI helps; plain code for everything else. **Mobile-first** (most students are on phones), responsive up to desktop. Engine = **Gemini**.
 
 ### Gemini usage map (the whole AI surface = ~1 endpoint)
 | Step | Engine | Why |
@@ -36,15 +36,16 @@ Simple > clever. Use AI only where only AI helps; plain code for everything else
 - **Secure:** key server-side · deterministic crisis guard · input validation · escape output · data local (only minimal context leaves device).
 - **Scalable:** stateless serverless route + localStorage = no DB load; **one** model call per entry.
 
-### 2–3 hr sprint order (cut everything not here)
-1. Scaffold Next.js + deploy shell (Vercel) — ~15m
+### Sprint order (~4–5h budget)
+1. Scaffold Next.js + deploy shell (Vercel), mobile-first — ~15m
 2. **Single-input home** (feeling chips · mic · type) + localStorage — no forms/onboarding — ~30m
 3. `/api/analyze` (1 Gemini call, Zod) — **infers mood/emotions/technique** + **keyword crisis guard** — ~30m
-4. Result card + crisis screen + helplines + disclaimer — ~30m
+4. Result card (ends with **"Back to studying"**) + crisis screen + helplines + disclaimer — ~30m
 5. 3 coded activities (breathing / CBT reframe / grounding) + routing — ~30m
 6. Voice journaling (Web Speech STT) — ~15m
-7. Mood trend + calm-minimal polish + re-deploy — ~20m
-> **MVP+ (add in order as time allows):** TTS spoken exercises (~15m) → light pattern view (~30m) → distraction break + calming game (~40m) → companion chat (~30m). All four ≈ +1h55m → over the 2–3h budget, so drop the tail if the clock runs out.
+7. Mood trend + **tests** (crisis red-team + unit) — ~35m
+8. Calm-minimal polish + re-deploy — ~20m
+> **MVP+ (now fits the 4–5h budget, build in order):** TTS spoken exercises (~15m) → light pattern view (~30m) → distraction break + calming game (~40m) → companion chat (~30m).
 > **Backlog:** cloud sync (multi-device), weekly narrative, exam context, vernacular, two-way voice.
 
 ## Phases (safety is NOT last)
