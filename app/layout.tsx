@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import './globals.css';
+import './globals.scss';
+import { DaypartTheme } from '@/components/Theme';
 
 export const metadata: Metadata = {
   title: 'MindMitra — a calm companion for exam season',
@@ -16,7 +17,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <DaypartTheme />
+        {children}
+      </body>
     </html>
   );
 }
