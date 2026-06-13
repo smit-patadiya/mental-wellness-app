@@ -300,16 +300,22 @@ function Activity({ technique, onDone }: { technique: Technique; onDone: () => v
     <>
       <h1 className="headline" style={{ marginBottom: 6 }}>{meta.title}</h1>
       <p className="muted" style={{ marginTop: 0 }}>{meta.blurb}</p>
-      {technique === 'breathing' ? (
-        <Breathing />
+      {technique === 'grounding' ? (
+        <Grounding onDone={onDone} />
       ) : (
-        <ol style={{ lineHeight: 2, paddingLeft: 20, fontSize: 16 }}>
-          {STEPS[technique as Exclude<Technique, 'breathing'>].map((s, i) => <li key={i}>{s}</li>)}
-        </ol>
+        <>
+          {technique === 'breathing' ? (
+            <Breathing />
+          ) : (
+            <ol style={{ lineHeight: 2, paddingLeft: 20, fontSize: 16 }}>
+              {STEPS[technique as Exclude<Technique, 'breathing'>].map((s, i) => <li key={i}>{s}</li>)}
+            </ol>
+          )}
+          <button className="btn btn-primary" onClick={onDone} style={{ marginTop: 'auto' }}>
+            <Sparkle size={18} /> Done — back to studying
+          </button>
+        </>
       )}
-      <button className="btn btn-primary" onClick={onDone} style={{ marginTop: 'auto' }}>
-        <Sparkle size={18} /> Done — back to studying
-      </button>
     </>
   );
 }
@@ -326,6 +332,28 @@ function Breathing() {
       <div className="breathe" style={{ transform: `scale(${PHASES[i][1]})` }} aria-hidden />
       <div className="breathe-phase">{PHASES[i][0]}</div>
       <p className="muted" style={{ textAlign: 'center', fontSize: 13 }}>Follow the circle. A few rounds is enough.</p>
+    </div>
+  );
+}
+
+const GROUND: { n: number; label: string }[] = [
+  { n: 5, label: 'things you can see' },
+  { n: 4, label: 'things you can touch' },
+  { n: 3, label: 'things you can hear' },
+  { n: 2, label: 'things you can smell' },
+  { n: 1, label: 'thing you can taste' },
+];
+
+function Grounding({ onDone }: { onDone: () => void }) {
+  const [i, setI] = useState(0);
+  const last = i === GROUND.length - 1;
+  return (
+    <div className="ground-wrap">
+      <div key={i} className="ground-num">{GROUND[i].n}</div>
+      <div className="ground-label">{GROUND[i].label}</div>
+      <button className="btn btn-primary" onClick={() => (last ? onDone() : setI(i + 1))}>
+        {last ? 'Done — back to studying' : 'Next'}
+      </button>
     </div>
   );
 }

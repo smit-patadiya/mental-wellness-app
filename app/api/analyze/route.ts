@@ -1,14 +1,24 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { UserInputSchema, parseAnalysis, type AnalysisResult } from '@/lib/schema';
-import { checkCrisis, type RiskLevel } from '@/lib/safety';
+import { UserInputSchema, parseAnalysis, type AnalysisResult, type Technique } from '@/lib/schema';
+import { checkCrisis } from '@/lib/safety';
+import { escalate } from '@/lib/risk';
 import { DEMO_ANALYSIS } from '@/lib/demo';
 
 export const runtime = 'nodejs';
 
-const ORDER: RiskLevel[] = ['green', 'yellow', 'orange', 'red'];
-/** Defense in depth: the deterministic guard may only ESCALATE risk, never lower the model's. */
-function escalate(a: RiskLevel, b: RiskLevel): RiskLevel {
-  return ORDER.indexOf(a) >= ORDER.indexOf(b) ? a : b;
+// When no key is set (demo mode), still vary the technique from the message
+// so it isn't always breathing.
+function pickDemoTechnique(text: string): Technique {
+  const t = text.toLowerCase();
+  if (/(panic|overwhelm|can'?t breathe|racing|anxious)/.test(t)) return 'breathing';
+  if (/(stupid|fail|failure|not good enough|hate myself|worthless|useless)/.test(t)) return 'self_compassion';
+  if (/(what if|i'?ll fail|never|always|everything|catastroph)/.test(t)) return 'reframe';
+  if (/(can'?t focus|distract|scattered|spiral|restless mind)/.test(t)) return 'grounding';
+  if (/(tired|exhaust|burnt|burnout|drained|no energy)/.test(t)) return 'break';
+  if (/(tense|stiff|restless|headache|neck|back|body)/.test(t)) return 'yoga';
+  if (/(numb|don'?t know|confus|can'?t name|empty)/.test(t)) return 'affect_labeling';
+  const opts: Technique[] = ['breathing', 'reframe', 'grounding', 'self_compassion', 'break', 'affect_labeling', 'yoga'];
+  return opts[text.length % opts.length];
 }
 
 function buildPrompt(text: string, context: string): string {
@@ -82,12 +92,12 @@ export async function POST(req: NextRequest) {
   const key = process.env.GEMINI_API_KEY;
   let analysis: AnalysisResult;
   if (!key) {
-    analysis = { ...DEMO_ANALYSIS };
+    analysis = { ...DEMO_ANALYSIS, technique: pickDemoTechnique(text) };
   } else {
     try {
       analysis = parseAnalysis(await callGemini(key, text, context));
     } catch {
-      analysis = { ...DEMO_ANALYSIS };
+      analysis = { ...DEMO_ANALYSIS, technique: pickDemoTechnique(text) };
     }
   }
 

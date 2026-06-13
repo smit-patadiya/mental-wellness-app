@@ -133,6 +133,13 @@ button { font-family:inherit; }
   display:flex; align-items:center; justify-content:center; color:var(--p-700); font-weight:600; font-size:15px; transition:transform 4s var(--ease); }
 .breathe-phase { font-size:15px; color:var(--p-700); font-weight:600; }
 
+/* ── 5-4-3-2-1 grounding ─────────────────────────────────── */
+.ground-wrap { display:flex; flex-direction:column; align-items:center; gap:12px; padding:40px 0; text-align:center; }
+.ground-num { font-family:var(--font-serif); font-size:84px; font-weight:500; color:var(--p-500); line-height:1; animation:popIn .45s var(--ease) both; }
+.ground-label { font-size:18px; color:var(--ink-soft); }
+.ground-wrap .btn-primary { margin-top:20px; max-width:280px; }
+@keyframes popIn { from{opacity:0;transform:scale(.6)} to{opacity:1;transform:scale(1)} }
+
 /* ── Crisis ─────────────────────────────────────────────── */
 .crisis { background:var(--rose-50); border:1px solid var(--rose-700); border-radius:var(--r-lg); padding:18px; }
 .crisis h2 { color:var(--rose-700); font-size:18px; margin:0 0 8px; font-weight:600; }
