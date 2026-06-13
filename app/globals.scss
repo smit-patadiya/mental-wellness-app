@@ -111,6 +111,7 @@ button { font-family:inherit; }
 .btn-primary { background:var(--p-500); color:#fff; box-shadow:0 8px 22px rgba(46,130,112,.3); width:100%; }
 .btn-primary:active { transform:scale(.99); }
 .btn-quiet { background:var(--surface); color:var(--ink-soft); border:1px solid var(--line); }
+.card { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--e1); padding:16px; margin-bottom:11px; }
 
 /* ── Result ─────────────────────────────────────────────── */
 .r-block { background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--e1); padding:16px; margin-bottom:11px; animation:rise .4s var(--ease) both; }
@@ -152,6 +153,157 @@ button { font-family:inherit; }
 .spinner { width:26px; height:26px; border:2.5px solid var(--line); border-top-color:var(--p-500); border-radius:50%; animation:spin .7s linear infinite; }
 @keyframes spin { to{transform:rotate(360deg)} }
 .center-load { display:flex; flex-direction:column; align-items:center; gap:13px; color:var(--muted); padding:72px 0; }
+
+/* ════════════════════════════════════════════════════════════
+   ADDITIONS — polish layer (additive only; nothing above removed)
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 1 · Blurred background art ─────────────────────────────
+   Reusable decorative layer. Drop <div class="blobs"> with one
+   or more <div class="blob"> inside; size/position/tint per blob
+   via inline style or modifier. Sits at z-index:0; app content is
+   lifted above by the existing `.app > * { z-index:1 }` rule. */
+.blobs {
+  position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0;
+}
+.blob {
+  position:absolute; border-radius:50%;
+  filter:blur(46px); opacity:.5;
+  will-change:transform;
+}
+/* optional named tints — soft, calm; pair with size/position utils below */
+.blob.b-sage     { background:#9FE0CC; }
+.blob.b-mint     { background:#8ED3BE; }
+.blob.b-lavender { background:#CDBDF0; }
+.blob.b-sky      { background:#A9C9E8; }
+.blob.b-sand     { background:#F4D7BE; }
+.blob.b-rose     { background:#F4C9C2; }
+.dark .blob { opacity:.34; }
+
+/* optional size + corner placement helpers (inline style also fine) */
+.blob.s-sm { width:170px; height:170px; }
+.blob.s-md { width:200px; height:200px; }
+.blob.s-lg { width:240px; height:240px; }
+.blob.at-tl { top:-40px; left:-30px; }
+.blob.at-tr { top:-30px; right:-30px; }
+.blob.at-bl { bottom:60px; left:-40px; }
+.blob.at-br { bottom:50px; right:-40px; }
+
+/* ── 2 · Color therapy — refined mood palettes ──────────────
+   Each mood nudges --grad-a (background tint) and --glow (top
+   halo). Kept low-saturation so foreground ink stays AA-safe on
+   the resulting near-white gradient. Distinct hue families:
+   calm=sage · neutral=warm-neutral · low=soft lavender ·
+   anxious=cool blue-green. Light values override the base block
+   above; dark variants follow. */
+[data-mood='calm']    { --grad-a:#EBF5F0; --glow:rgba(120,196,170,.34); }
+[data-mood='neutral'] { --grad-a:#F3F1EC; --glow:rgba(176,168,150,.26); }
+[data-mood='low']     { --grad-a:#F1ECF7; --glow:rgba(176,150,206,.30); }
+[data-mood='anxious'] { --grad-a:#E7F2F3; --glow:rgba(98,180,190,.30); }
+
+.dark [data-mood='calm']    { --grad-a:#14211C; --glow:rgba(46,130,112,.24); }
+.dark [data-mood='neutral'] { --grad-a:#1A1B18; --glow:rgba(120,118,104,.18); }
+.dark [data-mood='low']     { --grad-a:#1B1622; --glow:rgba(150,128,180,.22); }
+.dark [data-mood='anxious'] { --grad-a:#11201F; --glow:rgba(70,160,168,.22); }
+
+/* small colour-coded mood dot used in mood pickers / entries */
+.mood-dot { width:24px; height:24px; border-radius:7px; flex:0 0 auto; display:inline-block; }
+.mood-dot.m-calm    { background:var(--p-500); }
+.mood-dot.m-neutral { background:#A9B3AC; }
+.mood-dot.m-low     { background:#9B86C9; }
+.mood-dot.m-anxious { background:#5BA7C9; }
+
+/* ── 3 · Gentle motion utilities ────────────────────────────
+   Soft opacity + small lift. Reuses the existing `rise` keyframes
+   for `.rise`; `.fade-in` gets its own. Both disabled by the
+   prefers-reduced-motion block below (it ships last). */
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+.fade-in { animation:fadeIn .5s var(--ease) both; }
+.rise    { animation:rise .45s var(--ease) both; }
+/* small stagger helpers for lists of cards */
+.rise.d-1 { animation-delay:.05s; }
+.rise.d-2 { animation-delay:.10s; }
+.rise.d-3 { animation-delay:.15s; }
+.rise.d-4 { animation-delay:.20s; }
+
+/* ── 4 · Bottom nav + FAB ───────────────────────────────────
+   Pinned, blurred, translucent. Render as the LAST child of `.app`
+   so it sits flush at the bottom of the device frame (see §5). The
+   centre `.fab` is the Breathe action, raised above the bar. */
+.bottom-nav {
+  display:flex; align-items:center; justify-content:space-around;
+  gap:4px;
+  padding:8px 10px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.82);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);
+}
+.dark .bottom-nav { background:rgba(26,30,33,.78); }
+
+.bottom-nav button {
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  flex:1;
+  border:0; background:transparent; cursor:pointer;
+  color:var(--muted); font-size:10px; font-weight:600; line-height:1.1;
+  padding:6px 4px; border-radius:var(--r-md);
+  transition:color .15s var(--ease);
+}
+.bottom-nav button:hover { color:var(--ink-soft); }
+.bottom-nav button.on { color:var(--p-600); }
+
+/* centre Breathe action — round, raised, primary */
+.bottom-nav .fab {
+  flex:0 0 auto;
+  width:50px; height:50px; border-radius:50%;
+  margin-top:-20px;
+  background:var(--p-500); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 20px rgba(46,130,112,.4);
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.bottom-nav .fab:hover { transform:translateY(-1px); box-shadow:0 12px 26px rgba(46,130,112,.45); }
+.bottom-nav .fab:active { transform:scale(.97); }
+
+/* ── 5 · Layout anchoring ───────────────────────────────────
+   `.app` is already a flex column. This pushes the final child
+   (the bottom bar) flush to the bottom and removes alignment gaps
+   when the screen content is short. Use on whichever element ends
+   the column — typically `.bottom-nav` itself or a `.screen`. */
+.app > .bottom-nav { margin-top:auto; }
+.app > .nav        { margin-top:auto; }   /* legacy nav, same anchoring */
+.push-bottom       { margin-top:auto; }   /* generic spacer-killer */
+
+/* ── 6 · Small helpers ──────────────────────────────────────
+   Welcome: centred full-height intro column. */
+.welcome {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center;
+  gap:12px; padding:24px 20px;
+}
+
+/* sound-therapy track row (Sounds screen) */
+.sound-row {
+  display:flex; align-items:center; gap:11px;
+  padding:11px 0; border-bottom:1px solid var(--line);
+  font-size:14px; font-weight:500; color:var(--ink);
+}
+.sound-row:last-child { border-bottom:0; }
+.sound-row .tk {
+  width:38px; height:38px; border-radius:12px; flex:0 0 auto;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; background:var(--p-500);
+}
+.sound-row .play { margin-left:auto; color:var(--p-500); display:flex; align-items:center; }
+.sound-row .play.idle { color:var(--muted); }
+
+/* trigger chip (Insights screen) — soft translucent pill */
+.trigger-chip {
+  display:inline-flex; align-items:center;
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:999px; padding:6px 12px;
+  font-size:12px; font-weight:500; color:var(--ink-soft);
+  box-shadow:var(--e1);
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }

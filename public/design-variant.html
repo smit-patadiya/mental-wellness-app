@@ -3,145 +3,176 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MindMitra — design variant</title>
+<title>MindMitra — full design variant</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#1d2a26;--mut:#6b7a74;--p:#2E8270;--p2:#4F9E88;--card:rgba(255,255,255,.72);--line:rgba(20,50,40,.08)}
+:root{--ink:#1d2a26;--mut:#6b7a74;--p:#2E8270;--p2:#4F9E88;--card:rgba(255,255,255,.74);--line:rgba(20,50,40,.09)}
 *{box-sizing:border-box;margin:0}
-body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#e9efea;padding:28px 16px 60px}
-.board{max-width:1180px;margin:0 auto}
-.lead{text-align:center;margin-bottom:26px}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#e9efea;padding:26px 16px 70px}
+.board{max-width:1240px;margin:0 auto}
+.lead{text-align:center;margin-bottom:30px}
 .lead h1{font-family:'Fraunces',serif;font-weight:500;font-size:30px}
 .lead p{color:var(--mut);font-size:15px;margin-top:6px}
-.frames{display:flex;gap:30px;justify-content:center;flex-wrap:wrap}
-.phone{width:300px;height:620px;border-radius:42px;border:1px solid rgba(0,0,0,.08);overflow:hidden;position:relative;box-shadow:0 30px 70px rgba(20,45,35,.18);background:#f4f7f5}
+.frames{display:flex;gap:26px 30px;justify-content:center;flex-wrap:wrap}
+.phone{width:268px;height:560px;border-radius:38px;border:1px solid rgba(0,0,0,.08);overflow:hidden;position:relative;box-shadow:0 24px 56px rgba(20,45,35,.16);background:#f4f7f5}
 .bg{position:absolute;inset:0;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(46px);opacity:.55}
-.scr{position:relative;height:100%;display:flex;flex-direction:column;padding:26px 22px 0}
-.cap{position:absolute;bottom:-30px;width:100%;text-align:center;font-size:13px;font-weight:600;color:var(--mut)}
-.brand{display:flex;align-items:center;gap:9px;margin-bottom:8px}
-.mark{width:34px;height:34px;border-radius:11px;background:var(--p);display:flex;align-items:center;justify-content:center}
-.wordmark{font-family:'Fraunces',serif;font-size:17px;font-weight:500}
+.blob{position:absolute;border-radius:50%;filter:blur(44px);opacity:.5}
+.scr{position:relative;height:100%;display:flex;flex-direction:column;padding:22px 18px 0}
+.cap{text-align:center;font-size:12px;font-weight:600;color:var(--mut);margin-top:9px}
+.frame{display:flex;flex-direction:column;align-items:center}
+.brand{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--p);display:flex;align-items:center;justify-content:center}
+.wm{font-family:'Fraunces',serif;font-size:15px;font-weight:500}
 svg{display:block}
-.orb{margin:auto;width:170px;height:170px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.9),rgba(120,196,170,.25));border:1px solid rgba(255,255,255,.6);
-  box-shadow:0 20px 50px rgba(46,130,112,.22), inset 0 0 40px rgba(255,255,255,.5);animation:breathe 7s ease-in-out infinite}
-.orb .ring{width:96px;height:96px;border-radius:50%;border:2px solid var(--p2);opacity:.7;animation:breathe 7s ease-in-out infinite}
-@keyframes breathe{0%,100%{transform:scale(.82)}50%{transform:scale(1)}}
-.title{font-family:'Fraunces',serif;font-size:26px;font-weight:500;line-height:1.2}
-.sub{color:var(--mut);font-size:14px;margin-top:8px}
-.btn{margin-top:18px;background:var(--p);color:#fff;border:0;border-radius:999px;padding:15px;font:600 15px Inter;width:100%;box-shadow:0 12px 26px rgba(46,130,112,.3)}
-.moods{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
-.mood{background:var(--card);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500}
-.mswatch{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#fff}
-.tabbar{margin-top:auto;height:74px;background:rgba(255,255,255,.8);backdrop-filter:blur(12px);border-top:1px solid var(--line);
-  display:flex;align-items:center;justify-content:space-around;margin:0 -22px;padding:0 14px}
-.tab{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mut);font-size:10px;font-weight:600}
-.tab.on{color:var(--p)}
-.fab{width:54px;height:54px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;margin-top:-22px;box-shadow:0 10px 24px rgba(46,130,112,.4)}
-.rcard{background:var(--card);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:20px;padding:16px;margin-top:12px}
-.rlabel{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--p);margin-bottom:5px}
-.reflect{font-family:'Fraunces',serif;font-size:17px;line-height:1.4}
-.actcard{display:flex;align-items:center;gap:12px;background:var(--p);color:#fff;border-radius:20px;padding:15px;margin-top:12px;box-shadow:0 14px 30px rgba(46,130,112,.3)}
-.miniorb{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;animation:breathe 5s ease-in-out infinite}
-.back{margin-top:14px;color:var(--p);font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px}
-.note{max-width:760px;margin:48px auto 0;text-align:center;color:var(--mut);font-size:14px;line-height:1.7}
-.pill{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:13px;margin:4px;color:var(--ink)}
+.orb{margin:auto;width:150px;height:150px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.92),rgba(120,196,170,.28));box-shadow:0 18px 44px rgba(46,130,112,.22),inset 0 0 36px rgba(255,255,255,.5);animation:breathe 7s ease-in-out infinite}
+.orb .ring{width:84px;height:84px;border-radius:50%;border:2px solid var(--p2);opacity:.7}
+@keyframes breathe{0%,100%{transform:scale(.84)}50%{transform:scale(1)}}
+.title{font-family:'Fraunces',serif;font-size:23px;font-weight:500;line-height:1.2}
+.sub{color:var(--mut);font-size:13px;margin-top:6px}
+.btn{margin-top:16px;background:var(--p);color:#fff;border:0;border-radius:999px;padding:14px;font:600 14px Inter;width:100%;box-shadow:0 10px 22px rgba(46,130,112,.3)}
+.moods{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.mood{background:var(--card);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:15px;padding:12px;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500}
+.dot{width:24px;height:24px;border-radius:7px;flex:0 0 auto}
+.rcard{background:var(--card);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:17px;padding:13px;margin-top:10px}
+.rl{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--p);margin-bottom:4px}
+.reflect{font-family:'Fraunces',serif;font-size:16px;line-height:1.4}
+.act{display:flex;align-items:center;gap:10px;background:var(--p);color:#fff;border-radius:17px;padding:13px;margin-top:10px;box-shadow:0 12px 26px rgba(46,130,112,.3)}
+.act .ic{width:36px;height:36px;border-radius:11px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.chiprow{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+.tchip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:500}
+.bars{display:flex;align-items:flex-end;gap:5px;height:60px;margin-top:10px}
+.bars i{flex:1;border-radius:4px 4px 0 0;background:var(--p2)}
+.track{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;font-weight:500}
+.tk{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;flex:0 0 auto}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:13px;margin-top:10px}
+.bar-nav{margin:auto -18px 0;height:64px;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-around;padding:0 8px}
+.nv{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--mut);font-size:9px;font-weight:600}
+.nv.on{color:var(--p)}
+.fab{width:48px;height:48px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;margin-top:-20px;box-shadow:0 8px 20px rgba(46,130,112,.4)}
+.note{max-width:880px;margin:46px auto 0;color:var(--mut);font-size:14px;line-height:1.7}
+.note h3{color:var(--ink);font-family:'Fraunces',serif;font-weight:500;font-size:20px;margin-bottom:8px}
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-top:10px}
+.feat b{color:var(--ink)}
 </style>
 </head>
 <body>
 <div class="board">
   <div class="lead">
-    <h1>MindMitra — proposed direction</h1>
-    <p>Graphics-forward · low-text · color + sound therapy · blurred calm backgrounds · animated breathing · icon nav</p>
+    <h1>MindMitra — full app, proposed direction</h1>
+    <p>8 screens · graphic-first · color + sound therapy · animated orb · icon bottom bar pinned to bottom</p>
   </div>
-
   <div class="frames">
 
-    <!-- WELCOME -->
-    <div style="position:relative">
-    <div class="phone">
-      <div class="bg">
-        <div class="blob" style="width:240px;height:240px;background:#8ED3BE;top:-40px;left:-40px"></div>
-        <div class="blob" style="width:200px;height:200px;background:#CDBDF0;bottom:40px;right:-50px"></div>
-      </div>
-      <div class="scr">
-        <div class="orb"><div class="ring"></div></div>
-        <h2 class="title" style="text-align:center">MindMitra</h2>
-        <p class="sub" style="text-align:center">A calm minute,<br>then back to your books.</p>
-        <button class="btn">Begin</button>
-        <p style="text-align:center;font-size:11px;color:var(--mut);margin:14px 0 26px">Private · stays on your device</p>
-      </div>
-    </div>
-    <div class="cap">1 · Welcome</div>
-    </div>
+  <!-- 1 WELCOME -->
+  <div class="frame"><div class="phone">
+    <div class="bg"><div class="blob" style="width:220px;height:220px;background:#8ED3BE;top:-40px;left:-30px"></div><div class="blob" style="width:180px;height:180px;background:#CDBDF0;bottom:50px;right:-40px"></div></div>
+    <div class="scr"><div class="orb"><div class="ring"></div></div>
+      <h2 class="title" style="text-align:center">MindMitra</h2>
+      <p class="sub" style="text-align:center">A calm minute,<br>then back to your books.</p>
+      <button class="btn">Begin</button>
+      <p style="text-align:center;font-size:10px;color:var(--mut);margin:12px 0 24px">Private · stays on your device</p>
+    </div></div><div class="cap">1 · Welcome</div></div>
 
-    <!-- HOME -->
-    <div style="position:relative">
-    <div class="phone">
-      <div class="bg">
-        <div class="blob" style="width:220px;height:220px;background:#9FE0CC;top:-30px;right:-40px"></div>
-        <div class="blob" style="width:180px;height:180px;background:#F4D7BE;bottom:120px;left:-40px"></div>
+  <!-- 2 HOME -->
+  <div class="frame"><div class="phone">
+    <div class="bg"><div class="blob" style="width:200px;height:200px;background:#9FE0CC;top:-30px;right:-30px"></div><div class="blob" style="width:170px;height:170px;background:#F4D7BE;bottom:120px;left:-40px"></div></div>
+    <div class="scr"><div class="brand"><div class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M12 20v-7"/><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5Z"/><path d="M12 13c0-2-1.6-4-4-4 0 2.4 1.6 4 4 4Z"/></svg></div><span class="wm">MindMitra</span></div>
+      <p class="sub" style="margin:0">Good evening.</p><h2 class="title">How are you?</h2>
+      <div class="moods">
+        <div class="mood"><span class="dot" style="background:#E89A6B"></span>Overwhelmed</div>
+        <div class="mood"><span class="dot" style="background:#5BA7C9"></span>Anxious</div>
+        <div class="mood"><span class="dot" style="background:#9B86C9"></span>Low</div>
+        <div class="mood"><span class="dot" style="background:#2E8270"></span>Okay</div>
       </div>
-      <div class="scr">
-        <div class="brand"><div class="mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M12 20v-8"/><path d="M12 12c0-3 2-5 5-5 0 3-2 5-5 5Z"/><path d="M12 13c0-2-1.6-4-4-4 0 2.4 1.6 4 4 4Z"/></svg></div><span class="wordmark">MindMitra</span></div>
-        <p class="sub" style="margin:2px 0 0">Good evening.</p>
-        <h2 class="title" style="margin-top:2px">How are you?</h2>
-        <div class="moods">
-          <div class="mood"><span class="mswatch" style="background:#E89A6B">◔</span> Overwhelmed</div>
-          <div class="mood"><span class="mswatch" style="background:#5BA7C9">~</span> Anxious</div>
-          <div class="mood"><span class="mswatch" style="background:#9B86C9">▽</span> Low</div>
-          <div class="mood"><span class="mswatch" style="background:#2E8270">✓</span> Okay</div>
-        </div>
-        <div class="orb" style="width:120px;height:120px;margin:18px auto"><div class="ring" style="width:64px;height:64px"></div></div>
-        <p style="text-align:center;font-size:13px;color:var(--mut)">tap to talk</p>
-        <div class="tabbar">
-          <div class="tab on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 10l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Today</div>
-          <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V5M9 19v-7M14 19v-10M19 19V8"/></svg>Insights</div>
-          <div class="tab"><div class="fab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div></div>
-          <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 18V5l9-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Sounds</div>
-          <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>You</div>
-        </div>
-      </div>
-    </div>
-    <div class="cap">2 · Home (mood = color)</div>
-    </div>
+      <div class="orb" style="width:104px;height:104px;margin:14px auto"><div class="ring" style="width:56px;height:56px"></div></div>
+      <p style="text-align:center;font-size:12px;color:var(--mut)">tap to talk · or type</p>
+      <div class="bar-nav"><div class="nv on">⌂<span>Today</span></div><div class="nv">▦<span>Insights</span></div><div class="nv"><div class="fab"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div></div><div class="nv">♪<span>Sounds</span></div><div class="nv">◉<span>You</span></div></div>
+    </div></div><div class="cap">2 · Home — mood = color</div></div>
 
-    <!-- RESULT (low) -->
-    <div style="position:relative">
-    <div class="phone" style="background:#f1eff8">
-      <div class="bg">
-        <div class="blob" style="width:230px;height:230px;background:#C7B6EC;top:-50px;left:-30px;opacity:.6"></div>
-        <div class="blob" style="width:190px;height:190px;background:#A9C9E8;bottom:80px;right:-40px;opacity:.55"></div>
-      </div>
-      <div class="scr">
-        <div class="back" style="margin:0 0 6px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></div>
-        <div class="orb" style="width:130px;height:130px;margin:6px auto 10px;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.9),rgba(155,134,201,.3))"><div class="ring" style="border-color:#9B86C9;width:70px;height:70px"></div></div>
-        <div class="rcard"><div class="rlabel">Reflect</div><div class="reflect">Feeling low is heavy. It makes sense.</div></div>
-        <div class="actcard">
-          <div class="miniorb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg></div>
-          <div><div style="font-weight:600;font-size:15px">Box breathing</div><div style="font-size:12px;opacity:.85">2 min · let's slow down together</div></div>
-        </div>
-        <div class="back">↩ Back to studying</div>
-        <div class="tabbar">
-          <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 10l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Today</div>
-          <div class="tab on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V5M9 19v-7M14 19v-10M19 19V8"/></svg>Insights</div>
-          <div class="tab"><div class="fab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div></div>
-          <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 18V5l9-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Sounds</div>
-          <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>You</div>
-        </div>
-      </div>
-    </div>
-    <div class="cap">3 · Result — "feeling low" (color-therapy lavender, low text, animated orb)</div>
-    </div>
+  <!-- 3 RESULT (varied technique: reframe) -->
+  <div class="frame"><div class="phone" style="background:#f1eff8">
+    <div class="bg"><div class="blob" style="width:210px;height:210px;background:#C7B6EC;top:-40px;left:-20px;opacity:.55"></div><div class="blob" style="width:170px;height:170px;background:#A9C9E8;bottom:90px;right:-30px;opacity:.5"></div></div>
+    <div class="scr"><div style="color:var(--p);font-weight:600;font-size:13px">← back</div>
+      <div class="orb" style="width:110px;height:110px;margin:8px auto;background:radial-gradient(circle at 50% 40%,rgba(255,255,255,.92),rgba(155,134,201,.32))"><div class="ring" style="border-color:#9B86C9;width:58px;height:58px"></div></div>
+      <div class="rcard"><div class="rl">Reflect</div><div class="reflect">Feeling low is heavy. It makes sense.</div></div>
+      <div class="act"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M9 11l3 3 8-8"/><path d="M20 12a8 8 0 1 1-5-7.5"/></svg></div><div><div style="font-weight:600;font-size:14px">Reframe the thought</div><div style="font-size:11px;opacity:.85">2 min · CBT</div></div></div>
+      <div style="color:var(--p);font-weight:600;font-size:13px;margin-top:10px">↩ Back to studying</div>
+      <div class="bar-nav"><div class="nv on">⌂<span>Today</span></div><div class="nv">▦<span>Insights</span></div><div class="nv"><div class="fab"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div></div><div class="nv">♪<span>Sounds</span></div><div class="nv">◉<span>You</span></div></div>
+    </div></div><div class="cap">3 · Result (low → <b>Reframe</b>, not breathing)</div></div>
+
+  <!-- 4 ACTIVITY breathing -->
+  <div class="frame"><div class="phone">
+    <div class="bg"><div class="blob" style="width:240px;height:240px;background:#9FE0CC;top:20px;left:-20px;opacity:.5"></div></div>
+    <div class="scr" style="align-items:center;text-align:center"><div style="align-self:flex-start;color:var(--p);font-weight:600;font-size:13px">← back</div>
+      <h2 class="title" style="margin-top:20px">Box breathing</h2><p class="sub">in 4 · hold 4 · out 4 · hold 4</p>
+      <div class="orb" style="width:170px;height:170px;margin:26px auto"><div class="ring" style="width:90px;height:90px"></div></div>
+      <div style="font-weight:600;color:var(--p)">Breathe in…</div>
+      <button class="btn" style="margin-top:auto;margin-bottom:24px">Done — back to studying</button>
+    </div></div><div class="cap">4 · Exercise — animated breathing</div></div>
+
+  <!-- 5 INSIGHTS (HERO) -->
+  <div class="frame"><div class="phone">
+    <div class="bg"><div class="blob" style="width:190px;height:190px;background:#BEDDD2;top:-20px;right:-30px;opacity:.5"></div></div>
+    <div class="scr"><h2 class="title">Your patterns</h2><p class="sub" style="margin-bottom:4px">what standard trackers miss</p>
+      <div class="rcard"><div class="rl">This week</div><div style="font-size:14px;line-height:1.5">Your mood dips most after <b>evening mocks</b> on <b>low-sleep</b> days.</div></div>
+      <p style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 2px 2px">Triggers</p>
+      <div class="chiprow"><span class="tchip">mock tests</span><span class="tchip">low sleep</span><span class="tchip">comparison</span><span class="tchip">backlog</span></div>
+      <p style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin:14px 2px 2px">Mood · 14 days</p>
+      <div class="bars"><i style="height:40%"></i><i style="height:55%;background:#E89A6B"></i><i style="height:35%;background:#9B86C9"></i><i style="height:62%"></i><i style="height:48%"></i><i style="height:70%"></i><i style="height:58%"></i><i style="height:44%;background:#E89A6B"></i><i style="height:66%"></i></div>
+      <div class="bar-nav"><div class="nv">⌂<span>Today</span></div><div class="nv on">▦<span>Insights</span></div><div class="nv"><div class="fab"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div></div><div class="nv">♪<span>Sounds</span></div><div class="nv">◉<span>You</span></div></div>
+    </div></div><div class="cap">5 · Insights — <b>hidden triggers</b> (the hero)</div></div>
+
+  <!-- 6 SOUNDS -->
+  <div class="frame"><div class="phone">
+    <div class="bg"><div class="blob" style="width:200px;height:200px;background:#A9C9E8;top:-30px;left:-30px;opacity:.45"></div></div>
+    <div class="scr"><h2 class="title">Sounds</h2><p class="sub" style="margin-bottom:6px">sound therapy · picks itself to your mood</p>
+      <div class="track"><span class="tk" style="background:#5BA7C9">♪</span>Rain on a window<span style="margin-left:auto;color:var(--p)">▶</span></div>
+      <div class="track"><span class="tk" style="background:#2E8270">♪</span>Forest morning<span style="margin-left:auto;color:var(--mut)">▷</span></div>
+      <div class="track"><span class="tk" style="background:#9B86C9">♪</span>Deep focus<span style="margin-left:auto;color:var(--mut)">▷</span></div>
+      <div class="track"><span class="tk" style="background:#E89A6B">♪</span>Wind-down for sleep<span style="margin-left:auto;color:var(--mut)">▷</span></div>
+      <div class="stat" style="text-align:center;margin-top:14px"><div style="font-size:13px;color:var(--mut)">Now playing</div><div style="font-weight:600">Rain on a window</div></div>
+      <div class="bar-nav"><div class="nv">⌂<span>Today</span></div><div class="nv">▦<span>Insights</span></div><div class="nv"><div class="fab"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div></div><div class="nv on">♪<span>Sounds</span></div><div class="nv">◉<span>You</span></div></div>
+    </div></div><div class="cap">6 · Sounds — sound therapy</div></div>
+
+  <!-- 7 YOU / EXAM -->
+  <div class="frame"><div class="phone">
+    <div class="bg"><div class="blob" style="width:190px;height:190px;background:#9FE0CC;bottom:-20px;right:-30px;opacity:.45"></div></div>
+    <div class="scr"><h2 class="title">You</h2>
+      <div class="stat" style="display:flex;align-items:center;gap:12px"><div class="tk" style="background:var(--p);width:44px;height:44px;border-radius:14px;font-size:18px">42</div><div><div style="font-weight:600">NEET · 42 days to go</div><div style="font-size:12px;color:var(--mut)">advice adapts as it nears</div></div></div>
+      <div class="stat"><div class="rl">What helps you most</div><div style="font-size:14px">🌿 Breathing &gt; Reframe &gt; Grounding<br><span style="font-size:12px;color:var(--mut)">learned from your check-ins</span></div></div>
+      <div class="stat"><div style="font-weight:600;font-size:14px">7-day streak-free 🌱</div><div style="font-size:12px;color:var(--mut)">gentle, no guilt</div></div>
+      <div style="display:flex;gap:8px;margin-top:12px"><div class="tchip" style="flex:1;text-align:center">Export</div><div class="tchip" style="flex:1;text-align:center">Delete all</div></div>
+      <div class="bar-nav"><div class="nv">⌂<span>Today</span></div><div class="nv">▦<span>Insights</span></div><div class="nv"><div class="fab"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/></svg></div></div><div class="nv">♪<span>Sounds</span></div><div class="nv on">◉<span>You</span></div></div>
+    </div></div><div class="cap">7 · You — exam countdown + what helps you</div></div>
+
+  <!-- 8 CRISIS -->
+  <div class="frame"><div class="phone" style="background:#fbf2f1">
+    <div class="bg"><div class="blob" style="width:200px;height:200px;background:#F4C9C2;top:-30px;right:-30px;opacity:.4"></div></div>
+    <div class="scr"><div style="background:rgba(255,255,255,.8);border:1px solid #E7B0A8;border-radius:18px;padding:16px;margin-top:20px">
+      <h3 style="color:#B42318;font-family:'Fraunces',serif;font-weight:500;margin-bottom:8px">You're not alone</h3>
+      <p style="font-size:13px;color:var(--mut)">It sounds heavy. Please talk to someone today.</p>
+      <div style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px;margin-top:10px;display:flex;justify-content:space-between;font-weight:600;font-size:14px">Tele-MANAS<span style="color:#B42318">14416</span></div>
+      <div style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px;margin-top:7px;display:flex;justify-content:space-between;font-weight:600;font-size:14px">KIRAN<span style="color:#B42318">1800-599-0019</span></div>
+      <p style="font-size:10px;color:var(--mut);margin-top:10px">Not a therapist or emergency service.</p>
+    </div></div></div><div class="cap">8 · Crisis — calm, clear (auto)</div></div>
 
   </div>
 
   <div class="note">
-    <p><b>The direction:</b> graphics over text · an animated <b>breathing orb</b> as the calm hero · <b>color therapy</b> (palette shifts by mood — low→lavender, anxious→cool blue, calm→sage) · soft <b>blurred backgrounds</b> · <b>sound therapy</b> (ambient music, a Sounds tab) · a real <b>icon bottom bar</b>: Today · Insights · <b>Breathe</b> (center) · Sounds · You.</p>
-    <div style="margin-top:10px">
-      <span class="pill">color therapy</span><span class="pill">sound therapy</span><span class="pill">breathing / meditation</span><span class="pill">CBT reframe</span><span class="pill">self-compassion</span><span class="pill">low-text, graphic-first</span>
+    <h3>Features (MVP + researched differentiators)</h3>
+    <div class="feat">
+      <div><b>Hidden-trigger insights</b> — patterns across entries (the hero, screen 5)</div>
+      <div><b>6 rotating techniques</b> — breathing · reframe · grounding · self-compassion · break · name-it (fixes "always breathing")</div>
+      <div><b>Exam countdown context</b> — advice adapts as the date nears (screen 7)</div>
+      <div><b>"What helps you"</b> — closed-loop: learns your best coping</div>
+      <div><b>Sound therapy</b> — ambient music by mood (screen 6)</div>
+      <div><b>Color therapy</b> — palette shifts by mood + daytime</div>
+      <div><b>Voice journaling</b> — speak instead of type</div>
+      <div><b>Crisis safety</b> — deterministic guard → helplines</div>
+      <div><b>Weekly reflection</b> — short AI narrative of your week</div>
+      <div><b>Private + local</b> — nothing leaves your device</div>
     </div>
+    <p style="margin-top:12px"><b>Bottom bar (pinned bottom):</b> Today · Insights · <b>Breathe</b> (center FAB) · Sounds · You. Icons shown are placeholders — Antigravity swaps in crafted SVGs.</p>
   </div>
 </div>
 </body>

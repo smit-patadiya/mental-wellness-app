@@ -9,6 +9,8 @@ export interface Entry {
   moodScore: number;
   technique: Technique;
   riskLevel: RiskLevel;
+  emotions: string[];
+  stressors: string[];
   ts: number;
 }
 
@@ -17,7 +19,9 @@ const KEY = 'mindmitra.entries.v1';
 function read(): Entry[] {
   if (typeof localStorage === 'undefined') return [];
   try {
-    return JSON.parse(localStorage.getItem(KEY) || '[]') as Entry[];
+    const list = JSON.parse(localStorage.getItem(KEY) || '[]') as Entry[];
+    // Normalize older entries saved before emotions/stressors existed.
+    return list.map((e) => ({ ...e, emotions: e.emotions ?? [], stressors: e.stressors ?? [] }));
   } catch {
     return [];
   }
@@ -40,6 +44,8 @@ export function saveEntry(text: string, source: string, a: AnalysisResult): Entr
     moodScore: a.moodScore,
     technique: a.technique,
     riskLevel: a.riskLevel,
+    emotions: a.emotions,
+    stressors: a.stressors,
     ts: typeof performance !== 'undefined' ? Math.floor(performance.timeOrigin + performance.now()) : 0,
   };
   write([...read(), entry]);

@@ -1,11 +1,16 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Sprout, Mic, Wind, LifeBuoy, ArrowLeft, Sparkle, Sun, Moon, Send } from '@/components/icons';
+import { Sprout, Mic, Wind, LifeBuoy, ArrowLeft, Sparkle, Sun, Moon, Send, Check } from '@/components/icons';
 import type { AnalysisResult, Technique } from '@/lib/schema';
 import { activityFor } from '@/lib/techniques';
 import { DEMO_ANALYSIS } from '@/lib/demo';
-import { saveEntry, getEntries, getTrend, exportData, clearAll, type Entry } from '@/lib/storage';
+import { saveEntry } from '@/lib/storage';
+import { Welcome } from '@/components/Welcome';
+import { Insights } from '@/components/Insights';
+import { Sounds } from '@/components/Sounds';
+import { You } from '@/components/You';
+import { BottomNav, type Tab } from '@/components/BottomNav';
 
 const FEELINGS = ['Overwhelmed', 'Anxious', "Can't focus", 'Panicking', 'Low', 'Okay'];
 const HELPLINES = [
@@ -20,6 +25,14 @@ const STEPS: Record<Exclude<Technique, 'breathing'>, string[]> = {
   break: ['Stand up — water, or look out a window.', 'Stretch for 60 seconds.', 'Your books will wait. Come back when ready.'],
   affect_labeling: ['Name what you feel, in plain words.', 'Say it: “I feel ___ because ___.”', 'Notice it soften, even a little.'],
 };
+const TECH_ICON: Record<Technique, JSX.Element> = {
+  breathing: <Wind />,
+  reframe: <Sparkle />,
+  grounding: <Sprout />,
+  self_compassion: <LifeBuoy />,
+  break: <Sun />,
+  affect_labeling: <Check />,
+};
 
 function greeting(): string {
   const h = new Date().getHours();
@@ -28,36 +41,31 @@ function greeting(): string {
 function moodFromScore(s: number): string {
   return s >= 7 ? 'calm' : s >= 4 ? 'neutral' : 'low';
 }
-function dotColor(s: number): string {
-  return s >= 7 ? 'var(--p-500)' : s >= 4 ? 'var(--a-500)' : 'var(--rose-700)';
-}
-function ago(ts: number): string {
-  const m = Math.max(0, Math.floor((Date.now() - ts) / 60000));
-  if (m < 1) return 'just now';
-  if (m < 60) return `${m}m ago`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return `${h}h ago`;
-  return `${Math.floor(h / 24)}d ago`;
-}
 
 export default function Page() {
+  const [welcomed, setWelcomed] = useState(true);
+  const [tab, setTab] = useState<Tab>('today');
+  const [stage, setStage] = useState<'home' | 'result' | 'activity'>('home');
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
-  const [view, setView] = useState<'home' | 'result' | 'activity' | 'dashboard'>('home');
   const [activity, setActivity] = useState<Technique | null>(null);
   const [listening, setListening] = useState(false);
   const [dark, setDark] = useState(false);
   const [mood, setMood] = useState('calm');
-  const [entries, setEntries] = useState<Entry[]>([]);
   const recRef = useRef<any>(null);
 
   useEffect(() => {
+    setWelcomed(localStorage.getItem('mindmitra.welcomed') === '1');
     const d = localStorage.getItem('mindmitra.dark') === '1';
     setDark(d);
     document.documentElement.classList.toggle('dark', d);
   }, []);
 
+  function beginApp() {
+    localStorage.setItem('mindmitra.welcomed', '1');
+    setWelcomed(true);
+  }
   function toggleDark() {
     const d = !dark;
     setDark(d);
@@ -69,7 +77,8 @@ export default function Page() {
     const t = input.trim();
     if (!t || loading) return;
     setLoading(true);
-    setView('result');
+    setTab('today');
+    setStage('result');
     setResult(null);
     try {
       const res = await fetch('/api/analyze', {
@@ -106,23 +115,37 @@ export default function Page() {
     rec.start();
   }
 
-  function openDashboard() {
-    setEntries(getEntries().slice().reverse());
-    setView('dashboard');
-  }
   function goHome() {
-    setView('home');
+    setStage('home');
     setActivity(null);
+  }
+  function openBreathe() {
+    setTab('today');
+    setActivity('breathing');
+    setStage('activity');
+  }
+  function selectTab(t: Tab) {
+    setTab(t);
+    setStage('home');
+  }
+
+  if (!welcomed) {
+    return (
+      <div className="app" data-mood={mood}>
+        <Welcome onBegin={beginApp} />
+      </div>
+    );
   }
 
   const isCrisis = result && (result.riskLevel === 'red' || result.riskLevel === 'orange');
-  const showNav = view === 'home' || view === 'dashboard';
+  const showBack = tab === 'today' && stage !== 'home';
+  const hideNav = tab === 'today' && stage === 'activity';
 
   return (
     <div className="app" data-mood={mood}>
       <header className="app-bar">
-        {view === 'result' || view === 'activity' ? (
-          <button className="icon-btn" aria-label="Back" onClick={() => (view === 'activity' ? setView('result') : goHome())}>
+        {showBack ? (
+          <button className="icon-btn" aria-label="Back" onClick={() => (stage === 'activity' ? setStage('result') : goHome())}>
             <ArrowLeft />
           </button>
         ) : (
@@ -137,41 +160,41 @@ export default function Page() {
         </button>
       </header>
 
-      {view === 'home' && (
-        <main className="screen home">
-          <p className="greeting">{greeting()}.</p>
-          <h1 className="headline">How are you feeling right now?</h1>
-          <div className="feel-grid" role="group" aria-label="Quick feelings">
-            {FEELINGS.map((f) => (
-              <button key={f} className="chip" onClick={() => submit(f, 'chip')}>{f}</button>
-            ))}
+      <main className="screen">
+        {tab === 'today' && stage === 'home' && (
+          <div className="home" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+            <p className="greeting">{greeting()}.</p>
+            <h1 className="headline">How are you feeling right now?</h1>
+            <div className="feel-grid" role="group" aria-label="Quick feelings">
+              {FEELINGS.map((f) => (
+                <button key={f} className="chip" onClick={() => submit(f, 'chip')}>{f}</button>
+              ))}
+            </div>
+            <div className="mic-wrap">
+              <button className={`mic-btn ${listening ? 'listening' : ''}`} aria-label="Speak how you feel" onClick={startVoice}>
+                <Mic size={30} />
+              </button>
+              <span className="muted" style={{ fontSize: 13 }}>{listening ? 'listening…' : 'tap to talk'}</span>
+            </div>
+            <div className="say">
+              <input
+                className="text-input"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && submit(text, 'text')}
+                placeholder="…or write it in your own words"
+                aria-label="Describe how you feel"
+              />
+              <button className="icon-btn" aria-label="Send" onClick={() => submit(text, 'text')} style={{ flex: '0 0 auto' }}>
+                <Send />
+              </button>
+            </div>
+            <p className="priv">Private — everything stays on your device.</p>
           </div>
-          <div className="mic-wrap">
-            <button className={`mic-btn ${listening ? 'listening' : ''}`} aria-label="Speak how you feel" onClick={startVoice}>
-              <Mic size={30} />
-            </button>
-            <span className="muted" style={{ fontSize: 13 }}>{listening ? 'listening…' : 'tap to talk'}</span>
-          </div>
-          <div className="say">
-            <input
-              className="text-input"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && submit(text, 'text')}
-              placeholder="…or write it in your own words"
-              aria-label="Describe how you feel"
-            />
-            <button className="icon-btn" aria-label="Send" onClick={() => submit(text, 'text')} style={{ flex: '0 0 auto' }}>
-              <Send />
-            </button>
-          </div>
-          <p className="priv">Private — everything stays on your device.</p>
-        </main>
-      )}
+        )}
 
-      {view === 'result' && (
-        <main className="screen">
-          {loading || !result ? (
+        {tab === 'today' && stage === 'result' && (
+          loading || !result ? (
             <div className="center-load"><div className="spinner" /><p>Taking this in…</p></div>
           ) : isCrisis ? (
             <Crisis />
@@ -179,8 +202,8 @@ export default function Page() {
             <>
               <div className="r-block"><div className="r-label">Reflect</div><p className="r-reflect">{result.reflection}</p></div>
               <div className="r-block"><div className="r-label">Noticed</div><span className="insight-chip">{result.insight}</span></div>
-              <button className="activity-card" onClick={() => { setActivity(result.technique); setView('activity'); }}>
-                <span className="a-ic"><Wind /></span>
+              <button className="activity-card" onClick={() => { setActivity(result.technique); setStage('activity'); }}>
+                <span className="a-ic">{TECH_ICON[result.technique]}</span>
                 <span>
                   <span className="a-title">{activityFor(result.technique).title}</span>
                   <span className="a-sub">{activityFor(result.technique).durationMin} min · {activityFor(result.technique).blurb}</span>
@@ -189,24 +212,16 @@ export default function Page() {
               <div className="r-block"><div className="r-label">Encourage</div><p style={{ margin: 0 }}>{result.encouragement}</p></div>
               <button className="back-to-study" onClick={goHome}><ArrowLeft size={16} /> Back to studying</button>
             </>
-          )}
-        </main>
-      )}
+          )
+        )}
 
-      {view === 'activity' && activity && (
-        <main className="screen"><Activity technique={activity} onDone={goHome} /></main>
-      )}
+        {tab === 'today' && stage === 'activity' && activity && <Activity technique={activity} onDone={goHome} />}
+        {tab === 'insights' && <Insights />}
+        {tab === 'sounds' && <Sounds />}
+        {tab === 'you' && <You />}
+      </main>
 
-      {view === 'dashboard' && (
-        <main className="screen"><Dashboard entries={entries} onChanged={openDashboard} /></main>
-      )}
-
-      {showNav && (
-        <nav className="nav">
-          <button className={view === 'home' ? 'on' : ''} onClick={goHome}>Today</button>
-          <button className={view === 'dashboard' ? 'on' : ''} onClick={openDashboard}>Your week</button>
-        </nav>
-      )}
+      {!hideNav && <BottomNav active={tab} onSelect={selectTab} onBreathe={openBreathe} />}
     </div>
   );
 }
@@ -263,52 +278,5 @@ function Breathing() {
       <div className="breathe-phase">{PHASES[i][0]}</div>
       <p className="muted" style={{ textAlign: 'center', fontSize: 13 }}>Follow the circle. A few rounds is enough.</p>
     </div>
-  );
-}
-
-function Dashboard({ entries, onChanged }: { entries: Entry[]; onChanged: () => void }) {
-  const trend = getTrend(14);
-  function download() {
-    const blob = new Blob([exportData()], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'mindmitra-data.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-  function wipe() {
-    if (confirm('Delete all your entries from this device?')) {
-      clearAll();
-      onChanged();
-    }
-  }
-  if (entries.length === 0) {
-    return <div className="empty">No check-ins yet.<br />Your moods will show up here.</div>;
-  }
-  return (
-    <>
-      <h1 className="headline">Your week</h1>
-      <div className="r-block">
-        <div className="r-label">Mood trend</div>
-        <div className="trend" aria-label="Recent mood trend">
-          {trend.map((m, i) => <i key={i} style={{ height: `${m * 10}%`, background: dotColor(m) }} />)}
-        </div>
-      </div>
-      <p className="section-title">Recent</p>
-      {entries.slice(0, 12).map((e) => (
-        <div className="entry" key={e.id}>
-          <span className="dot" style={{ background: dotColor(e.moodScore) }} />
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 15 }}>{e.text}</div>
-            <div className="when">{ago(e.ts)} · {activityFor(e.technique).title}</div>
-          </div>
-        </div>
-      ))}
-      <div style={{ display: 'flex', gap: 9, marginTop: 18 }}>
-        <button className="btn btn-quiet" style={{ flex: 1 }} onClick={download}>Export</button>
-        <button className="btn btn-quiet" style={{ flex: 1 }} onClick={wipe}>Delete all</button>
-      </div>
-    </>
   );
 }
